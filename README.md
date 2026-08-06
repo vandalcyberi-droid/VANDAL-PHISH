@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/VERSION-3.0-red?style=for-the-badge&logo=v" />
+  <img src="https://img.shields.io/badge/VERSION-3.0-red?style=for-the-badge" />
   <img src="https://img.shields.io/badge/LICENSE-MIT-green?style=for-the-badge" />
   <img src="https://img.shields.io/badge/PHP-7.4+-blue?style=for-the-badge&logo=php" />
   <img src="https://img.shields.io/badge/BASH-5.0+-black?style=for-the-badge&logo=gnu-bash" />
@@ -25,37 +25,92 @@
 
 ## 🎯 Features
 
-<table>
-<tr>
-<td width="50%">
-
-### 📸 Capture Modules
-- **Camera Access** — Auto-activates on page load
-- **Microphone Recording** — Stealth audio capture
-- **GPS Tracking** — High-accuracy location
-- **Device Fingerprinting** — GPU, CPU, RAM, Battery
-- **IP Geolocation** — Country, City, ISP
-- **WebRTC IP Leak** — Real IP behind VPN
-
-</td>
-<td width="50%">
-
-### 🎭 Lure Templates
-- `💥 SMS Bomber Pro` — Fake SMS bombing service
-- `🔓 Rubika Hack Pro` — Fake Rubika account hacker
-- `📸 Gallery Hack Pro` — Fake gallery extractor
-- `🔐 Rubika Filter Breaker` — Fake filter code generator
-
-</td>
-</tr>
-</table>
+| 📸 Capture | 🎭 Templates |
+|------------|-------------|
+| Camera Auto-Access | SMS Bomber Pro |
+| Microphone Recording | Rubika Hack Pro |
+| GPS Location Tracking | Gallery Hack Pro |
+| Device Fingerprinting | Rubika Filter Breaker |
+| IP Geolocation | |
+| WebRTC IP Leak | |
 
 ---
 
 ## 🚀 Quick Start
 
 ```bash
-# One-command setup & launch
 git clone https://github.com/YOUR_USER/vandal-kit.git
 cd vandal-kit
 bash run.sh
+```
+
+**That's it.** The script auto-installs dependencies, asks which template and permissions, builds payload, starts server, creates public HTTPS tunnel, and gives you the link.
+
+---
+
+## 🛠️ Menu Options
+
+**Step 1 — Select Page:**
+```
+[1] 💥 SMS Bomber Pro
+[2] 🔓 Rubika Hack Pro
+[3] 📸 Gallery Hack Pro
+[4] 🔐 Rubika Filter Breaker
+```
+
+**Step 2 — Select Permissions:**
+```
+[1] 📸 Camera Only
+[2] 📸+🎤 Camera + Microphone
+[3] 📸+📍 Camera + GPS
+[4] 📸+🎤+📍 Camera + Mic + GPS
+[5] 🎯 FULL (All permissions)
+```
+
+---
+
+## 📊 Data Collected
+
+| Type | Format | Description |
+|------|--------|-------------|
+| Webcam | `.jpg` | Photos every 3 seconds |
+| Microphone | `.webm` | Audio recordings |
+| GPS | `.json` | Latitude, Longitude |
+| Device Info | `.json` | Full fingerprint |
+| Visitor Log | `.txt` | IP, User-Agent, Time |
+
+---
+
+## 📁 Structure
+
+```
+vandal-kit/
+└── run.sh          # Single file - everything else auto-generated
+```
+
+---
+
+## 📊 Dashboard
+
+```
+https://YOUR_LINK/panel.php
+Password: vandal123
+```
+
+---
+
+## ⚠️ Disclaimer
+
+```
+FOR AUTHORIZED SECURITY TESTING ONLY.
+Use only on targets you own or have written permission to test.
+Unauthorized use is illegal. Developer assumes no liability.
+```
+
+---
+
+<div align="center">
+
+### Made with ❤️‍🔥 by VANDAL
+
+</div>
